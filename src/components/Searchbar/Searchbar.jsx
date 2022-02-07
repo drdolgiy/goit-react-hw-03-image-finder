@@ -1,4 +1,4 @@
-import react from "react";
+import { ImSearch } from "react-icons/im";
 import propTypes from "prop-types";
 
 const Searchbar = () => {
@@ -6,6 +6,7 @@ const Searchbar = () => {
         <header className="searchbar">
             <form className="form">
                 <button type="submit" className="button">
+                    <ImSearch style={{ marginRight: 8 }} />
                     <span className="button-label">Search</span>
                 </button>
 
