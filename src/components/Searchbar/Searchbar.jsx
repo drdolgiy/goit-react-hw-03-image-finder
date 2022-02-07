@@ -15,7 +15,7 @@ export default class Searchbar extends Component {
 
     handleSubmit = event => {
         event.preventDefault();
-    }
+    };
 
 
     render() {
