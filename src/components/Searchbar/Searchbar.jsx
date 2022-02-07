@@ -1,5 +1,5 @@
 import { ImSearch } from "react-icons/im";
-import propTypes from "prop-types";
+// import propTypes from "prop-types";
 
 const Searchbar = () => {
     return (
