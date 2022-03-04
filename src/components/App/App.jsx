@@ -8,12 +8,7 @@ import { Loader } from "../Loader/Loader";
 import { Button } from "../Button/Button";
 import { Modal } from "../Modal/Modal";
 
-
-// import { ImageGalleryItem } from "./ImageGalleryItem/ImageGalleryItem"
 // import {Container} from "./App.styled"
-
-
-
 export class App extends Component {
 
   state = {
@@ -26,9 +21,7 @@ export class App extends Component {
     largeImageURL: ''
   };
 
-  
-  
-  async componentDidUpdate(prevProps, prevState) {
+    async componentDidUpdate(prevProps, prevState) {
     const prevQuery = prevState.query;
     const nextQuery = this.state.query; 
 
@@ -56,14 +49,9 @@ export class App extends Component {
       page: 1,
       images: [],
       error: null,
+      largeImageURL: ''
     })
   };
-
-  getLargeImage = largeImageURL => {
-    this.setState({
-      largeImageURL: largeImageURL
-    })
-  }
 
   toggleModal = (largeImageURL) => {
     this.setState(({showModal}) => ({
@@ -83,8 +71,9 @@ export class App extends Component {
         {images.length > 0 && <ImageGallery images={images} onClick={this.toggleModal} showModal={showModal}/>}
         {loading && <Loader/>}
         {shouldRenderButton && <Button onClick={this.fetchImages} />}
-        {showModal &&
-        <Modal largeImageURL={largeImageURL} onClose={this.toggleModal} />}
+        {showModal && <Modal  onClose={this.toggleModal}>
+            <img src={largeImageURL} alt={'result of query'} width='900px'/>
+          </Modal>}
         {/* <ToastContainer autoClose={2000} /> */}
       </div >
     )
