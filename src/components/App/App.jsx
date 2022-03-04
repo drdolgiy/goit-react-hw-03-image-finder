@@ -1,68 +1,91 @@
 import { React, Component } from "react";
-// import axios from "axios";
 
 // import { ToastContainer } from "react-toastify";
 import { getImages } from "../API/api-services";
 import { Searchbar } from "../Searchbar/Searchbar";
 import { ImageGallery } from "../ImageGallery/ImageGallery";
-import {Loader} from "../Loader/Loader"
-// import {Button} from '../Button/Button'
+import { Loader } from "../Loader/Loader";
+import { Button } from "../Button/Button";
+import { Modal } from "../Modal/Modal";
+
 
 // import { ImageGalleryItem } from "./ImageGalleryItem/ImageGalleryItem"
 // import {Container} from "./App.styled"
 
+
+
 export class App extends Component {
 
   state = {
-    query: '',
     loading: false,
     error: null,
     images: [],
     page: 1,
-    
+    query: '',
+    showModal: false,
+    largeImageURL: ''
   };
 
+  
+  
   async componentDidUpdate(prevProps, prevState) {
-
     const prevQuery = prevState.query;
     const nextQuery = this.state.query; 
 
-    try {
-      if (prevQuery !== nextQuery) {
-        this.setState({ loading: true, images: [] });
-          const newImages = await getImages(nextQuery);
-        this.setState({ images: newImages});
-        this.setState({ loading: false });
-          }
-    } catch (error) {
-      this.setState({ error });
-    }
+    if (prevQuery !== nextQuery) {
+      this.fetchImages()
+    };
   };
-    
 
+  fetchImages = () => { 
+    const { query, page } = this.state;
+    this.setState({ loading: true });
+  
+    getImages(query, page).then(images => {
+      this.setState(prevState => ({
+        images: [...prevState.images, ...images],
+        page: prevState.page + 1,
+      }))
+    }).catch(error => this.setState({ error }))
+      .finally(() => this.setState({ loading: false }))
+  }; 
+  
   handleFormSubmit = imageName => {
-    this.setState({ query: imageName });
-
+    this.setState({
+      query: imageName,
+      page: 1,
+      images: [],
+      error: null,
+    })
   };
 
-  // loadMoreButton = prevState => {
-  //   this.setState({page: prevState + 1})
-  // }
+  getLargeImage = largeImageURL => {
+    this.setState({
+      largeImageURL: largeImageURL
+    })
+  }
 
+  toggleModal = (largeImageURL) => {
+    this.setState(({showModal}) => ({
+      showModal: !showModal,
+      largeImageURL: largeImageURL
+
+    }))
+  };
 
   render() {
-    const { images, loading, error } = this.state;
-    
+    const { images, loading, error, largeImageURL, showModal  } = this.state;
+    const shouldRenderButton = images.length > 0 && !loading;
     return (
       <div>      
         <Searchbar onSubmit={this.handleFormSubmit} />
         {error && <p>Whoops, something went wrong</p>}
+        {images.length > 0 && <ImageGallery images={images} onClick={this.toggleModal} showModal={showModal}/>}
         {loading && <Loader/>}
-        {images.length > 0 && <ImageGallery images={images} />}
-        {/* <Button onClick={this.loadMoreButton}/> */}
-
+        {shouldRenderButton && <Button onClick={this.fetchImages} />}
+        {showModal &&
+        <Modal largeImageURL={largeImageURL} onClose={this.toggleModal} />}
         {/* <ToastContainer autoClose={2000} /> */}
-
       </div >
     )
   };

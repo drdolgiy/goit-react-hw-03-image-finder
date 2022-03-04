@@ -3,7 +3,7 @@ import { ImSearch } from "react-icons/im";
 // import { toast } from "react-toastify";
 // import { Toast } from "react-toastify/dist/components";
 // import propTypes from "prop-types";
-import { Header, Form, Button } from "./Searchbar.styled";
+import { Header, Form,Input, Button, ButtonLabel } from "./Searchbar.styled";
 
 
 export class Searchbar extends Component {
@@ -30,10 +30,9 @@ export class Searchbar extends Component {
 
     render() {
         return (
-            <Header className="searchbar">
-                <Form onSubmit={this.handleSubmit} className="form">
-                    <input
-                        className="input"
+            <Header>
+                <Form onSubmit={this.handleSubmit}>
+                    <Input
                         onChange={this.handleNameChange}
                         value={this.state.imageName}
                         type="text"
@@ -42,9 +41,9 @@ export class Searchbar extends Component {
                         placeholder="Search images and photos"
                     />
 
-                    <Button type="submit" className="button">
+                    <Button type="submit">
                         <ImSearch style={{ marginRight: 8 }} />
-                        <span className="button-label">Search</span>
+                        <ButtonLabel className="button-label">Search</ButtonLabel>
                     </Button>
                 </Form>
             </Header>
