@@ -4,7 +4,7 @@ export const Gallery = styled.ul`
     display: flex;
     flex-wrap: wrap;
     width: 1200px;
-    margin:  50px auto 60px auto;
+    margin:  20px auto;
     padding: 0 10px;
 
 `
